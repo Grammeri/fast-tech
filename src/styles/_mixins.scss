@@ -1,0 +1,24 @@
+@use './variables' as *;
+
+@mixin container {
+  width: min(1200px, 92vw);
+  margin-inline: auto;
+}
+
+@mixin button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  padding: 0 16px;
+  border-radius: $radius;
+  background: $primary;
+  color: #0b1a0e;
+  font-weight: 600;
+  border: 1px solid transparent;
+  transition: .2s ease;
+  cursor: pointer;
+
+  &:hover { background: $primary-700; color: #fff; }
+  &:disabled { opacity: .6; cursor: not-allowed; }
+}

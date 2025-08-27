@@ -1,0 +1,50 @@
+@forward './variables';
+@forward './mixins';
+@use './variables' as *;
+@use './mixins' as *;
+@use './base';
+
+.app {
+  min-height: 100dvh;
+  display: grid;
+  align-items: start;
+}
+
+.header {
+  @include container;
+  padding: 24px 0;
+  font-weight: 700;
+  color: $muted;
+}
+
+.page {
+  @include container;
+  padding: 24px 0 48px;
+}
+
+.card {
+  background: $panel;
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: $radius;
+  box-shadow: $shadow;
+}
+
+.btn { @include button; }
+
+.field {
+  display: grid;
+  gap: 6px;
+
+  label { color: $muted; font-size: 14px; }
+  input {
+    height: 44px;
+    border-radius: $radius;
+    padding: 0 12px;
+    border: 1px solid rgba(255,255,255,.08);
+    background: rgba(255,255,255,.02);
+    color: $text;
+    outline: none;
+    transition: .2s ease;
+    &:focus { border-color: $primary; box-shadow: 0 0 0 3px rgba(34,197,94,.15); }
+  }
+}
