@@ -3,8 +3,11 @@ import { Outlet } from 'react-router-dom';
 
 const App: React.FC = () => {
     return (
-        <div style={{ minHeight: '100dvh', display: 'grid', placeItems: 'stretch' }}>
-            <Outlet />
+        <div className="app">
+            <header className="header">FAST-TECH Test</header>
+            <main className="page">
+                <Outlet />
+            </main>
         </div>
     );
 };

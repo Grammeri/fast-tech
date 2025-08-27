@@ -1,0 +1,66 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.wrapper {
+  min-height: calc(100dvh - 120px); // с учётом шапки/футера App
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.card {
+  width: min(520px, 92vw);
+  padding: 28px 24px;
+  border-radius: $radius;
+  background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+  border: 1px solid rgba(255,255,255,.08);
+  box-shadow: $shadow;
+  backdrop-filter: blur(8px);
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 800;
+  margin: 0 0 16px;
+}
+
+.form {
+  display: grid;
+  gap: 14px;
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+
+  label {
+    color: $muted;
+    font-size: 14px;
+  }
+
+  input {
+    height: 44px;
+    border-radius: $radius;
+    padding: 0 12px;
+    border: 1px solid rgba(255,255,255,.10);
+    background: rgba(255,255,255,.03);
+    color: $text;
+    outline: none;
+    transition: .2s ease;
+
+    &:focus {
+      border-color: $primary;
+      box-shadow: 0 0 0 3px rgba(34,197,94,.15);
+    }
+  }
+}
+
+.actions {
+  margin-top: 8px;
+  display: grid;
+}
+
+.button {
+  @include button;
+  width: 100%;
+}
