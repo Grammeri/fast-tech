@@ -3,7 +3,7 @@
 @use './base';
 
 .app {
-  min-height: 100dvh;
+  min-height: 100vh;
   display: grid;
   align-items: start;
 }
@@ -17,6 +17,7 @@
 
 .page {
   @include container;
+  flex: 1;
   padding: 24px 0 48px;
 }
 

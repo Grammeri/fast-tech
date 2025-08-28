@@ -1,33 +1,52 @@
-import React, { useContext } from 'react';
-import cls from './Home.module.scss';
-import { useNavigate } from 'react-router-dom';
-import {AuthContext} from "@/shared/contexts/AuthContext.ts";
+import React, { useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import cls from "./Home.module.scss";
+import { makeImageUrl } from "@/shared/lib/images";
+import { AuthContext } from "@/shared/contexts/AuthContext";
 
 export const Home: React.FC = () => {
-    const { signOut } = useContext(AuthContext);
+    const [images, setImages] = useState<string[]>([]);
     const navigate = useNavigate();
+    const { signOut } = useContext(AuthContext);
 
-    const handleOut = async () => {
+    const loadImages = () => {
+        const newImages = Array.from({ length: 5 }, () => makeImageUrl());
+        setImages(newImages);
+    };
+
+    useEffect(() => {
+        loadImages();
+        const interval = setInterval(loadImages, 10000);
+        return () => clearInterval(interval);
+    }, []);
+
+    const handleSignOut = async () => {
         await signOut();
-        navigate('/signin', { replace: true });
+        navigate("/signin", { replace: true });
     };
 
     return (
-        <div className={cls.root}>
-            <header className={cls.header}>Home</header>
+        <div className={cls.container}>
+            <header className={cls.header}>
+                <h1>Home</h1>
+                <button onClick={handleSignOut} className={cls.signOut}>
+                    Sign Out
+                </button>
+            </header>
 
             <main className={cls.content}>
-                <div className={cls.card}>
-                    <p className={cls.note}>
-                        Здесь позже сделаем 5 картинок с параллельной загрузкой и автообновлением каждые 10 секунд.
-                    </p>
-                    <div style={{ marginTop: 16, display: 'grid', justifyContent: 'start' }}>
-                        <button className="btn" onClick={handleOut}>Sign Out</button>
-                    </div>
+                <div className={cls.gallery}>
+                    {images.map((src, i) => (
+                        <div key={i} className={cls.card}>
+                            <img src={src} alt={`Random ${i}`} />
+                        </div>
+                    ))}
                 </div>
             </main>
 
-            <footer className={cls.footer}>© 2025 FAST-TECH Test</footer>
+            <div className={cls.footer}>
+                © 2025 FAST-TECH Test by Dmitry Nikolayev
+            </div>
         </div>
     );
 };

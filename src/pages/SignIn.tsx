@@ -6,12 +6,18 @@ import cls from './SignIn.module.scss';
 import { authApi } from '@/shared/api/auth';
 import { authStorage } from '@/shared/lib/auth';
 import { AuthContext } from '@/shared/contexts/AuthContext';
-import {type SignInSchema, signInSchema} from "@/shared/validation/authSchemas.ts";
+import { type SignInSchema, signInSchema } from '@/shared/validation/authSchemas';
 
 export const SignIn: React.FC = () => {
-    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<SignInSchema>({
+    const {
+        register,
+        handleSubmit,
+        formState: { errors, isSubmitting },
+    } = useForm<SignInSchema>({
         resolver: zodResolver(signInSchema),
+        mode: 'onSubmit',
     });
+
     const navigate = useNavigate();
     const { setAuth } = useContext(AuthContext);
 
@@ -28,19 +34,40 @@ export const SignIn: React.FC = () => {
 
     return (
         <section className={cls.wrapper}>
-            <div className={cls.card}>
-                <h1 className={cls.title}>Sign In</h1>
-                <form onSubmit={handleSubmit(onSubmit)} className={cls.form}>
+            <div className={cls.card} role="form" aria-labelledby="signin-title">
+                <h1 className={cls.title} id="signin-title">Sign In</h1>
+
+                <form onSubmit={handleSubmit(onSubmit)} className={cls.form} noValidate>
                     <div className={cls.field}>
-                        <label>Login</label>
-                        <input {...register("login")} />
-                        {errors.login && <p className={cls.error}>{errors.login.message}</p>}
+                        <label htmlFor="login">Login</label>
+                        <input
+                            id="login"
+                            {...register('login')}
+                            autoComplete="username"
+                            inputMode="email"
+                            placeholder="Enter login"
+                            aria-invalid={!!errors.login || undefined}
+                            aria-describedby={errors.login ? 'login-error' : undefined}
+                        />
+                        {errors.login && (
+                            <p className={cls.error} id="login-error">{errors.login.message}</p>
+                        )}
                     </div>
 
                     <div className={cls.field}>
-                        <label>Password</label>
-                        <input type="password" {...register("password")} />
-                        {errors.password && <p className={cls.error}>{errors.password.message}</p>}
+                        <label htmlFor="password">Password</label>
+                        <input
+                            id="password"
+                            type="password"
+                            {...register('password')}
+                            autoComplete="current-password"
+                            placeholder="Enter password"
+                            aria-invalid={!!errors.password || undefined}
+                            aria-describedby={errors.password ? 'password-error' : undefined}
+                        />
+                        {errors.password && (
+                            <p className={cls.error} id="password-error">{errors.password.message}</p>
+                        )}
                     </div>
 
                     <div className={cls.actions}>
