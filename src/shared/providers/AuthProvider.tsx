@@ -1,17 +1,7 @@
-import React, { createContext, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { authStorage } from '@/shared/lib/auth';
 import { authApi } from '@/shared/api/auth';
-
-type AuthContextValue = {
-    isAuth: boolean;
-    signOut: () => Promise<void>;
-    setAuth: (v: boolean) => void;
-};
-export const AuthContext = createContext<AuthContextValue>({
-    isAuth: false,
-    signOut: async () => {},
-    setAuth: () => {},
-});
+import { AuthContext } from '@/shared/contexts/AuthContext';
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [isAuth, setIsAuth] = useState<boolean>(() => {
