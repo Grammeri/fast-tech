@@ -10,7 +10,7 @@ services:
       - mock
 
   mock:
-    image: ghcr.io/wiremock/wiremock:3.7.0
+    image: wiremock/wiremock:latest
     ports:
       - "3001:8080"
     volumes:

@@ -1,0 +1,26 @@
+# deps & builds
+node_modules
+dist
+dist-ssr
+
+# VCS / IDE
+.git
+.gitignore
+.idea
+.vscode
+
+# env
+.env
+.env.*
+!.env.example
+
+# logs / cache
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+.eslintcache
+
+# misc
+Dockerfile
+docker-compose.yml
