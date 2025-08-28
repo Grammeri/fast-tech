@@ -1,14 +1,24 @@
 import axios from 'axios';
-import { authStorage } from '@/shared/lib/auth';
 
-export const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL,
-});
+type RuntimeEnv = {
+    API_BASE_URL?: string;
+    IMAGES_BASE_URL?: string;
+};
 
-api.interceptors.request.use((config) => {
-    const access = authStorage.getAccess();
-    if (access) config.headers.Authorization = `Bearer ${access}`;
-    return config;
-});
+declare global {
+    interface Window {
+        __ENV?: RuntimeEnv;
+    }
+}
+
+const runtimeEnv: RuntimeEnv =
+    typeof window !== 'undefined' && window.__ENV ? window.__ENV : {};
+
+export const API_BASE_URL: string =
+    runtimeEnv.API_BASE_URL ||
+    import.meta.env.VITE_API_BASE_URL ||
+    'http://localhost:3000';
+
+export const api = axios.create({ baseURL: API_BASE_URL });
 
 
