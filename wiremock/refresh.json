@@ -1,0 +1,12 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/auth/refresh",
+    "headers": { "Authorization": { "matches": "Bearer .*" } }
+  },
+  "response": {
+    "status": 200,
+    "headers": { "Content-Type": "application/json" },
+    "jsonBody": { "accessToken": "accessToken", "refreshToken": "refreshToken" }
+  }
+}

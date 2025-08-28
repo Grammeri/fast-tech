@@ -1,0 +1,8 @@
+{
+  "request": { "method": "POST", "url": "/auth/sign-in" },
+  "response": {
+    "status": 200,
+    "headers": { "Content-Type": "application/json" },
+    "jsonBody": { "accessToken": "accessToken", "refreshToken": "refreshToken" }
+  }
+}
