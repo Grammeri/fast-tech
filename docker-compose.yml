@@ -1,16 +1,17 @@
 services:
   web:
-    build: .
+    build:
+      context: .
+      args:
+        VITE_API_URL: http://localhost:3001
+        VITE_IMAGE_HOST: https://dummyimage.com
     ports:
       - "5173:80"
-    environment:
-      - VITE_API_URL=http://mock:8080
-      - VITE_IMAGE_HOST=https://dummyimage.com
     depends_on:
       - mock
 
   mock:
-    image: wiremock/wiremock:latest
+    image: wiremock/wiremock:3
     ports:
       - "3001:8080"
     volumes:

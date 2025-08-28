@@ -1,22 +1,22 @@
-# Этап сборки
+# build
 FROM node:20-alpine AS build
 WORKDIR /app
 
-# Копируем package.json и lock-файл
-COPY package.json pnpm-lock.yaml* ./
+# передадим сборочные аргументы
+ARG VITE_API_URL
+ARG VITE_IMAGE_HOST
+ENV VITE_API_URL=$VITE_API_URL
+ENV VITE_IMAGE_HOST=$VITE_IMAGE_HOST
 
-# Устанавливаем pnpm и зависимости
+COPY package.json pnpm-lock.yaml* ./
 RUN corepack enable && corepack prepare pnpm@latest --activate
 RUN pnpm install --frozen-lockfile
 
-# Копируем весь проект и билдим
 COPY . .
 RUN pnpm build
 
-# Этап запуска (Nginx для отдачи статических файлов)
+# run
 FROM nginx:alpine
 COPY --from=build /app/dist /usr/share/nginx/html
-
-# Настройки nginx можно переопределить через свой конфиг, если нужно
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
