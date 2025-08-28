@@ -2,7 +2,7 @@
 @use '../styles/mixins' as *;
 
 .wrapper {
-  min-height: calc(100dvh - 120px); // с учётом шапки/футера App
+  min-height: calc(100dvh - 120px);
   display: grid;
   place-items: center;
   padding: 24px;
@@ -54,6 +54,13 @@
     }
   }
 }
+
+.error {
+  font-size: 14px;
+  color: #ef4444;
+  margin-top: -4px;
+}
+
 
 .actions {
   margin-top: 8px;

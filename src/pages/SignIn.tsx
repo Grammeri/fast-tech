@@ -1,28 +1,28 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate } from 'react-router-dom';
 import cls from './SignIn.module.scss';
 import { authApi } from '@/shared/api/auth';
 import { authStorage } from '@/shared/lib/auth';
-import {AuthContext} from "@/shared/contexts/AuthContext.ts";
+import { AuthContext } from '@/shared/contexts/AuthContext';
+import {type SignInSchema, signInSchema} from "@/shared/validation/authSchemas.ts";
 
 export const SignIn: React.FC = () => {
-    const [login, setLogin] = useState('');
-    const [password, setPassword] = useState('');
-    const [loading, setLoading] = useState(false);
+    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<SignInSchema>({
+        resolver: zodResolver(signInSchema),
+    });
     const navigate = useNavigate();
     const { setAuth } = useContext(AuthContext);
 
-    const onSubmit = async () => {
-        setLoading(true);
+    const onSubmit = async (data: SignInSchema) => {
         try {
-            const t = await authApi.signIn(login, password);
+            const t = await authApi.signIn(data.login, data.password);
             authStorage.setTokens(t.accessToken, t.refreshToken);
             setAuth(true);
             navigate('/', { replace: true });
         } catch {
             alert('Sign in failed');
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -30,24 +30,25 @@ export const SignIn: React.FC = () => {
         <section className={cls.wrapper}>
             <div className={cls.card}>
                 <h1 className={cls.title}>Sign In</h1>
-
-                <div className={cls.form}>
+                <form onSubmit={handleSubmit(onSubmit)} className={cls.form}>
                     <div className={cls.field}>
                         <label>Login</label>
-                        <input value={login} onChange={(e) => setLogin(e.target.value)} />
+                        <input {...register("login")} />
+                        {errors.login && <p className={cls.error}>{errors.login.message}</p>}
                     </div>
 
                     <div className={cls.field}>
                         <label>Password</label>
-                        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                        <input type="password" {...register("password")} />
+                        {errors.password && <p className={cls.error}>{errors.password.message}</p>}
                     </div>
 
                     <div className={cls.actions}>
-                        <button type="button" className={cls.button} onClick={onSubmit} disabled={loading}>
-                            {loading ? 'Signing in…' : 'Sign In'}
+                        <button type="submit" className={cls.button} disabled={isSubmitting}>
+                            {isSubmitting ? 'Signing in…' : 'Sign In'}
                         </button>
                     </div>
-                </div>
+                </form>
             </div>
         </section>
     );
