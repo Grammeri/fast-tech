@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 type RuntimeEnv = {
-    API_BASE_URL?: string;
-    IMAGES_BASE_URL?: string;
+    VITE_API_URL?: string;
+    VITE_IMAGE_HOST?: string;
 };
 
 declare global {
@@ -12,13 +12,11 @@ declare global {
 }
 
 const runtimeEnv: RuntimeEnv =
-    typeof window !== 'undefined' && window.__ENV ? window.__ENV : {};
+  typeof window !== 'undefined' && window.__ENV ? window.__ENV : {};
 
 export const API_BASE_URL: string =
-    runtimeEnv.API_BASE_URL ||
-    import.meta.env.VITE_API_BASE_URL ||
-    'http://localhost:3000';
+  runtimeEnv.VITE_API_URL ||
+  import.meta.env.VITE_API_URL ||
+  'http://localhost:8080'; // дефолт под локальный WireMock
 
 export const api = axios.create({ baseURL: API_BASE_URL });
-
-

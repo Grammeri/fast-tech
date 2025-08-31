@@ -1,18 +1,22 @@
 services:
-  web:
-    build:
-      context: .
-    ports:
-      - "5173:80"
-    environment:
-      - VITE_API_URL=http://mock:8080
-      - VITE_IMAGE_HOST=https://dummyimage.com
-    depends_on:
-      - mock
-
   mock:
     image: wiremock/wiremock:2.35.0
     ports:
-      - "3001:8080"
+      - "8080:8080"                       # наружу отдаём 8080
     volumes:
-      - ./wiremock/mappings:/home/wiremock/mappings
+      - ./wiremock:/home/wiremock         # лучше смонтировать всю папку (mappings + __files)
+    command: [ "--verbose" ]
+
+  web:
+    build:
+      context: .
+      args:                               # впекаем URL в билд (vite использует на этапе сборки)
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:8080}
+        VITE_IMAGE_HOST: ${VITE_IMAGE_HOST:-https://dummyimage.com}
+    environment:                          # и на рантайме на всякий случай
+      - VITE_API_URL=${VITE_API_URL:-http://localhost:8080}
+      - VITE_IMAGE_HOST=${VITE_IMAGE_HOST:-https://dummyimage.com}
+    ports:
+      - "5173:80"
+    depends_on:
+      - mock
