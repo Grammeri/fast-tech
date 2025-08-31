@@ -8,7 +8,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return !!authStorage.getAccess() && !!authStorage.getRefresh();
     });
 
-    // Refresh on page reload (if authorized)
     useEffect(() => {
         const run = async () => {
             const refreshToken = authStorage.getRefresh();

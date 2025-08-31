@@ -2,18 +2,18 @@ services:
   mock:
     image: wiremock/wiremock:2.35.0
     ports:
-      - "8080:8080"                       # наружу отдаём 8080
+      - "8080:8080"
     volumes:
-      - ./wiremock:/home/wiremock         # лучше смонтировать всю папку (mappings + __files)
+      - ./wiremock:/home/wiremock
     command: [ "--verbose" ]
 
   web:
     build:
       context: .
-      args:                               # впекаем URL в билд (vite использует на этапе сборки)
+      args:
         VITE_API_URL: ${VITE_API_URL:-http://localhost:8080}
         VITE_IMAGE_HOST: ${VITE_IMAGE_HOST:-https://dummyimage.com}
-    environment:                          # и на рантайме на всякий случай
+    environment:
       - VITE_API_URL=${VITE_API_URL:-http://localhost:8080}
       - VITE_IMAGE_HOST=${VITE_IMAGE_HOST:-https://dummyimage.com}
     ports:
